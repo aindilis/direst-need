@@ -35,8 +35,6 @@ our $VERSION = '0.01';
 # with an external configuration file acting as an override for
 # local deployment.
 
-print DirestNeed->path_to('/')."FUCKME\n";
-
 __PACKAGE__->config
   (
    name => 'DirestNeed',

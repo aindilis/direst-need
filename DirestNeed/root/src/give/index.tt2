@@ -1,0 +1,29 @@
+[% USE Dumper %]
+
+
+
+<div class="jumbotron">
+    <div class="container"><img style="float: right;" src="/static/images/catalyst_logo.png">
+        <h1>Welcome [% donor %] to DirestNeed!</h1>
+        <p>A place to connect those in dire need such as the homeless with online donors.</p>
+	
+    </div>
+</div>[%# end of jumbotron %]
+
+<div class="container">
+    <!-- Example row of columns -->
+    <div class="row">
+        <div class="col-md-4">
+	    [% FOREACH user IN shoppinglists.keys %]
+		<h2>Wishlist for [% user %]</h2>
+		[% FOREACH item IN shoppinglists.item(user) %]
+		    [% item %] <a href="https://www.amazon.com/s?k=[%- item | url -%]&ref=nb_sb_noss_2"> [Find on Prime Now] </a><br>
+		[% END %]
+		<br>
+	    [% END %]
+	</div>
+    </div>
+    <hr>
+    [% PROCESS site/footer %]
+</div>[%# end of jumbotron %]
+<!-- END of welcome -->

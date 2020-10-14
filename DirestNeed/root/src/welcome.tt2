@@ -1,32 +1,39 @@
 [% META title = 'DirestNeed' %]
 <div class="jumbotron">
-      <div class="container"><img style="float: right;" src="/static/images/catalyst_logo.png">
+    <div class="container"><img style="float: right;" src="/static/images/catalyst_logo.png">
         <h1>Welcome to DirestNeed!</h1>
-          <p>A place to connect the homeless with online donors.</p>
-	  
-      </div>
- </div>[%# end of jumbotron %]
+        <p>A place to connect those in dire need such as the homeless with online donors.</p>
+	
+    </div>
+</div>[%# end of jumbotron %]
 
-    <div class="container">
-      <!-- Example row of columns -->
-      <div class="row">
-        <div class="col-md-4">
-          <h2>Template Toolkit</h2>
-          <p>The Template Toolkit is a fast, flexible and highly extensible template processing system. It is Free (in both senses: free beer and free speech), Open Source software and runs on virtually every modern operating system known to man. It is mature, reliable and well documented, and is used to generate content for countless web sites ranging from the very small to the very large.</p>
-          <p><a class="btn btn-default" href="http://www.template-toolkit.org/" role="button">View details &raquo;</a></p>
+<div class="container">
+    <!-- Example row of columns -->
+    <div class="row">
+        <div class="col-md-6">
+            <h2>Give</h2>
+            <p>
+
+		Find people in need, order products online using Amazon
+		Now, and have them delivered to where they are in
+		under an hour.
+
+	    </p>
+            <p><a class="btn btn-default" href="[% c.uri_for('give') %]" role="button">Get started &raquo;</a></p>
         </div>
-        <div class="col-md-4">
-          <h2>Bootstrap 3</h2>
-          <p>Sleek, intuitive, and powerful mobile first front-end framework for faster and easier web development.<br>
-             Global CSS settings, fundamental HTML elements styled and enhanced with extensible classes, and an advanced grid system. </p>
-          <p><a class="btn btn-default" href="http://getbootstrap.com/" role="button">View details &raquo;</a></p>
-       </div>
-        <div class="col-md-4">
-          <h2>jQuery or Dojo</h2>
-          <p>jQuery is common, but DojoToolkit is powerful and clean, stable and asynchronous. I would like to substitute jQuery with Dojo 2.0 as soon as it'll be released in 2014.</p>
-          <p><a class="btn btn-default" href="http://dojotoolkit.org/" role="button">View details &raquo;</a></p>
-        </div>
-      </div>
+        <div class="col-md-6">
+            <h2>Get</h2>
+            <p>
+		
+		Create a shopping list of items you need, and donors
+		may choose to purchase some of these items.  You will
+		be notified with a text message if you have a cell
+		phone.
+
+	    </p>
+            <p><a class="btn btn-default" href="[% c.uri_for('get') %]" role="button">Get started &raquo;</a></p>
+	</div>
+    </div>
     <hr>
 
     [% PROCESS site/footer %]

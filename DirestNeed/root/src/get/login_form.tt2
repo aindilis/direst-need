@@ -1,0 +1,33 @@
+[% USE Dumper %]
+
+<div class="jumbotron">
+    <div class="container"><img style="float: right;" src="/static/images/catalyst_logo.png">
+        <h1>Welcome to DirestNeed!</h1>
+        <p>A place to connect those in dire need such as the homeless with online donors.</p>
+	
+    </div>
+</div>[%# end of jumbotron %]
+
+<div class="container">
+    <!-- Example row of columns -->
+    <div class="row">
+        <div class="col-md-4">
+	    <h2>Please Login:</h2>
+	    <form action="[% c.uri_for('login') %]" method="post">
+		<input type="login" id="login" name="login"></input>
+		<br>
+		&nbsp;&nbsp;
+		<br>
+		<input type="password" id="password" name="password"></input>
+		<br>
+		&nbsp;&nbsp;
+		<br>
+		<input type="submit" id="submit" name="submit"></input>
+	    </form>
+	</div>
+    </div>
+    <hr>
+    [% PROCESS site/footer %]
+</div>[%# end of jumbotron %]
+<!-- END of welcome -->
+

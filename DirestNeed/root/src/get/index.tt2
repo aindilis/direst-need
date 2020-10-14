@@ -1,0 +1,180 @@
+[% USE Dumper %]
+
+<head>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+    <script
+	src="https://maps.googleapis.com/maps/api/js?key=[% google_maps_apikey %]&callback=initMap&libraries=&v=weekly"
+	defer>
+    </script>
+    <link rel="stylesheet" type="text/css" href="./style.css" />
+    <style>
+     /* Always set the map height explicitly to define the size of the div
+      * element that contains the map. */
+     #map {
+	 height: 100%;
+     }
+
+     /* Optional: Makes the sample page fill the window. */
+     html,
+     body {
+	 height: 100%;
+	 margin: 0;
+	 padding: 0;
+     }
+
+     #floating-panel {
+	 position: absolute;
+	 top: 10px;
+	 left: 25%;
+	 z-index: 5;
+	 background-color: #fff;
+	 padding: 5px;
+	 border: 1px solid #999;
+	 text-align: center;
+	 font-family: "Roboto", "sans-serif";
+	 line-height: 30px;
+	 padding-left: 10px;
+     }
+
+     #floating-panel {
+	 position: absolute;
+	 top: 5px;
+	 left: 50%;
+	 margin-left: -180px;
+	 width: 350px;
+	 z-index: 5;
+	 background-color: #fff;
+	 padding: 5px;
+	 border: 1px solid #999;
+     }
+
+     #latlng {
+	 width: 225px;
+     }
+    </style>
+
+    <script>
+     function initMap() {
+	 const map = new google.maps.Map(document.getElementById("map"), {
+	     zoom: 8,
+	     center: { lat: 40.731, lng: -73.997 },
+	 });
+	 const geocoder = new google.maps.Geocoder();
+	 const infowindow = new google.maps.InfoWindow();
+	 document.getElementById("submit").addEventListener("click", () => {
+	     geocodeLatLng(geocoder, map, infowindow);
+	 });
+     }
+
+     function geocodeLatLng(geocoder, map, infowindow) {
+	 const input = document.getElementById("latlng").value;
+	 const latlngStr = input.split(",", 2);
+	 const latlng = {
+	     lat: parseFloat(latlngStr[0]),
+	     lng: parseFloat(latlngStr[1]),
+	 };
+	 geocoder.geocode({ location: latlng }, (results, status) => {
+	     if (status === "OK") {
+		 if (results[0]) {
+		     map.setZoom(11);
+		     const marker = new google.maps.Marker({
+			 position: latlng,
+			 map: map,
+		     });
+		     infowindow.setContent(results[0].formatted_address);
+		     infowindow.open(map, marker);
+		 } else {
+		     window.alert("No results found");
+		 }
+	     } else {
+		 window.alert("Geocoder failed due to: " + status);
+	     }
+	 });
+     }
+     
+    </script>
+</head>
+
+<div class="jumbotron">
+    <div class="container"><img style="float: right;" src="/static/images/catalyst_logo.png">
+        <h1>Welcome [% receiver %] to DirestNeed!</h1>
+        <p>A place to connect those in dire need such as the homeless with online donors.</p>
+	
+    </div>
+</div>[%# end of jumbotron %]
+
+
+<div class="container">
+    <!-- Example row of columns -->
+    <div class="row">
+        <div class="col-md-4">
+	    <h2>Items [% receiver %] is looking for:</h2>
+	    [% FOREACH item IN shoppinglist %]
+		<a href="https://www.amazon.com/s?k=[%- item | url -%]&ref=nb_sb_noss_2"> [Find on <em>Prime Now</em>] </a> [% item %] <br>
+	    [% END %]
+	</div>
+        <div class="col-md-4">
+	    <h2>Update [% receiver %]'s story:</h2>
+	    <h3>[% receiver %]'s story:</h3>
+	    <textarea id="story" name="story" rows="5" cols="33">
+My story is that I was being abused and I ran away.  Now it's December and I don't have socks or shoes to wear and I'm outside and homeless...  Please help!
+	    </textarea>
+	</div>
+    </div>
+    <div class="row">
+	<div class="col-md-4">
+	    <h2>Update [% receiver %]'s delivery info:</h2>
+	    <em>(Please note, your location information will being given only to the Prime Now delivery service.  It won't be shared with donors).</em>
+	    <div>
+		<button onclick="getLocation()">Get [% receiver %]'s Location using GPS/WIFI</button>
+		<p id="demo"></p>
+	    </div>
+		<h3>Nearest Address:</h3>
+		<table>
+		    <tr>
+			<td><center><b>Address:</b></center></td>
+			<td><input type="text" id="address" name="address" value="52 W 33RD ST"></input></td>
+		    </tr>
+		    <tr>
+			<td><center><b>Zip:</b></center></td>
+			<td><input type="text" id="zip-code" name="zip-code" value="10001"></input></td>
+		    </tr>
+		</table>
+		<h3>Location and Appearance:</h3>
+		<textarea id="location-description" name="location-description" rows="5" cols="33">
+Give the packages to [% receiver %].  The person sitting outside with the grey beard and brown jacket.
+		</textarea>
+
+	</div>
+	<div class="col-md-4">
+	    <h2>Reverse geocoding:</h2>
+	    <div id="floating-panel">
+		<input id="latlng" type="text" value="40.714224,-73.961452" />
+		<input id="submit" type="button" value="Reverse Geocode" />
+	    </div>
+	    <div id="map"></div>
+	</div>
+    </div>
+    <hr>
+    [% PROCESS site/footer %]
+</div>[%# end of jumbotron %]
+
+<!-- END of welcome -->
+
+<script>
+ var x = document.getElementById("demo");
+
+ function getLocation() {
+     if (navigator.geolocation) {
+	 navigator.geolocation.getCurrentPosition(showPosition);
+     } else {
+	 x.innerHTML = "Geolocation is not supported by this browser.";
+     }
+ }
+
+ function showPosition(position) {
+     x.innerHTML = "Latitude: " + position.coords.latitude +
+		   "<br>Longitude: " + position.coords.longitude;
+ }
+
+</script>
