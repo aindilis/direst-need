@@ -14,13 +14,26 @@
     <!-- Example row of columns -->
     <div class="row">
         <div class="col-md-4">
+	    <table width="700px">
 	    [% FOREACH user IN shoppinglists.keys %]
-		<h2>Wishlist for [% user %]</h2>
-		[% FOREACH item IN shoppinglists.item(user) %]
-		    [% item %] <a href="https://www.amazon.com/s?k=[%- item | url -%]&ref=nb_sb_noss_2"> [Find on Prime Now] </a><br>
-		[% END %]
-		<br>
+		<tr>
+		    <td width="45%">
+			<h2>[% user | html %]'s story</h2>
+			[% stories.item(user) %]<br>
+			<hr>
+		    </td>
+		    <td width="10%">
+		    </td>
+		    <td width="45%">
+			<h2>[% user | html %]'s wishlist</h2>
+			[% FOREACH item IN shoppinglists.item(user) %]
+			    <a href="https://www.amazon.com/s?k=[%- item | url -%]&ref=nb_sb_noss_2"> [Find on <em>Prime Now</em>] </a> [% item | html %] <br>
+			[% END %]
+			<hr>
+		    </td>
+		</tr>
 	    [% END %]
+	    </table>
 	</div>
     </div>
     <hr>

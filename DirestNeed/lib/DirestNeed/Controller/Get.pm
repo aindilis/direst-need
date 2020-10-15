@@ -30,6 +30,7 @@ sub index :Path :OptionalArgs(1) {
 	(
 	 receiver => $receiver,
 	 shoppinglist => $c->model('DB')->shoppinglists->{$receiver},
+	 story => $c->model('DB')->stories->{$receiver},
 	 google_maps_apikey => $google_maps_apikey,
 	);
     }

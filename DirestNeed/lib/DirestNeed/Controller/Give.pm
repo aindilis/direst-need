@@ -26,6 +26,7 @@ sub index :Path :OptionalArgs(1) {
 	(
 	 donor => $donor,
 	 shoppinglists => $c->model('DB')->shoppinglists,
+	 stories => $c->model('DB')->stories,
 	);
     }
   } else {

@@ -56,6 +56,19 @@ has shoppinglists =>
    },
   );
 
+has stories =>
+  (
+   isa      => 'HashRef',
+   is       => 'rw',
+   default => sub {
+     return
+       {
+	'jack' => 'I had to caregive for my mother and that depleted all my financial reserves.',
+       };
+   },
+  );
+
+
 __PACKAGE__->meta->make_immutable;
 
 1;
