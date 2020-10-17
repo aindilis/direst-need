@@ -5,7 +5,7 @@
     <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
     <script
 	src="https://maps.googleapis.com/maps/api/js?key=[% google_maps_apikey %]&callback=initMap&libraries=&v=weekly"
-	defer>
+	     defer>
     </script>
     <link rel="stylesheet" type="text/css" href="./style.css" />
     <style type="text/css">
@@ -103,62 +103,67 @@
     </script>
 </head>
 <body>
-    <body>
-	<div class="jumbotron">
-	    <div class="container"><img style="float: right;" src="/static/images/catalyst_logo.png">
-		<h1>Welcome [% receiver | html %] to DirestNeed!</h1>
-		<p>A place to connect those in dire need such as the homeless with online donors.</p>
-		
-	    </div>
-	</div>[%# end of jumbotron %]
-	
-	<div class="container">
-	    <!-- Example row of columns -->
-	    <div class="row">
-		<div class="col-md-4">
-		    <h2>[% receiver | html %] is looking for:</h2>
-		    [% FOREACH item IN shoppinglist %]
-			<a href="https://www.amazon.com/s?k=[%- item | url -%]&ref=nb_sb_noss_2"> [Find on <em>Prime Now</em>] </a> [% item %] <br>
-		    [% END %]
-		</div>
-		<div class="col-md-8">
-		    <h2>[% receiver | html %]'s story:</h2>
-		    <textarea id="story" name="story" rows="5" cols="66" placeholder="My story is that I was being abused and I ran away.  Now it's December and I don't have socks or shoes to wear and I'm outside and homeless...  Please help!">[% story | html %]</textarea>
-		</div>
-	    </div>
-	    <div class="row">
-		<div class="col-md-4">
-		    <h2>[% receiver | html %]'s delivery info:</h2>
-		    <em>(Please note, your location information will being given only to the Prime Now delivery service.  It won't be shared with donors).</em>
-		    <div>
-			<button onclick="getLocation()">Get [% receiver | html %]'s Location using GPS/WIFI</button>
-			<p id="demo"></p>
-		    </div>
-		    <h2>Nearest address to [% receiver | html %]:</h2>
-		    <table>
-			<tr>
-			    <td><center><b>Address:</b></center></td>
-			    <td><input type="text" id="address" name="address" placeholder="52 W 33RD ST, New York, New York, 10001" size="80"></input></td>
-			</tr>
-		    </table>
-		</div>
-		<div class="col-md-8">
-		    <h2>[% receiver | html %]'s location and appearance:</h2>
-		    <textarea id="location-description" name="location-description" rows="5" cols="66" placeholder="Give the packages to [% receiver | html %].  The person sitting outside with the grey beard and brown jacket."></textarea>
-		</div>
-	    </div>
-	    <hr>
+    <div class="jumbotron">
+	<div class="container"><img style="float: right;" src="/static/images/catalyst_logo.png">
+	    <h1>Welcome [% receiver | html %] to DirestNeed!</h1>
+	    <p>A place to connect those in dire need such as the homeless with online donors.</p>
+	    
 	</div>
-	<div>
-	    <input type="hidden" id="latlng" type="text" value="40.714224,-73.961452" />
-	    <input type="hidden" id="submit" type="button" value="Reverse Geocode" />
+    </div>[%# end of jumbotron %]
+    
+    <div class="container">
+	<!-- Example row of columns -->
+	<div class="row">
+	    <div class="col-md-4">
+		<h2>[% receiver | html %] is looking for:</h2>
+		[% FOREACH item IN shoppinglist %]
+		    <a href="https://www.amazon.com/s?k=[%- item | url -%]&ref=nb_sb_noss_2"> [Find on <em>Prime Now</em>] </a> [% item %] <br>
+		[% END %]
+		<form action="[%-c.uri_for(receiver,'add_to_shoppinglist') %]" method="post">
+		    <input type="text" name="add_to_shoppinglist" id="add_to_shoppinglist" placeholder="shoes, size 11"></input>
+		    <button type="submit" name="submit" id="submit">Add to shoppinglist</button>
+		</form>
+	    </div>
+	    <div class="col-md-8">
+		<h2>[% receiver | html %]'s story:</h2>
+		<textarea id="story" name="story" rows="5" cols="66" placeholder="My story is that I was being abused and I ran away.  Now it's December and I don't have socks or shoes to wear and I'm outside and homeless...  Please help!">[% story | html %]</textarea>
+	    </div>
 	</div>
-	<div id="map"></div>
-	<div>
-	    [% PROCESS site/footer %]
-	</div>[%# end of jumbotron %]
-    </body>
-</html>
+	<div class="row">
+	    <div class="col-md-4">
+		<h2>[% receiver | html %]'s delivery info:</h2>
+		<em>(Please note, your location information will being given only to the Prime Now delivery service.  It won't be shared with donors).</em>
+		<div>
+		    <button onclick="getLocation()">Get [% receiver | html %]'s Location using GPS/WIFI</button>
+		    <p id="demo"></p>
+		</div>
+		<h2>Nearest address to [% receiver | html %]:</h2>
+		<table>
+		    <tr>
+			<td><center><b>Address:</b></center></td>
+			<td><input type="text" id="address" name="address" placeholder="52 W 33RD ST, New York, New York, 10001" size="80"></input></td>
+		    </tr>
+		</table>
+	    </div>
+	    <div class="col-md-8">
+		<h2>[% receiver | html %]'s location and appearance:</h2>
+		<textarea id="location-description" name="location-description" rows="5" cols="66" placeholder="Give the packages to [% receiver | html %].  The person sitting outside with the grey beard and brown jacket."></textarea>
+	    </div>
+	</div>
+	<hr>
+    </div>
+    <div>
+	<input type="hidden" id="latlng" type="text" value="40.714224,-73.961452" />
+	<input type="hidden" id="submit" type="button" value="Reverse Geocode" />
+    </div>
+    <div id="map"></div>
+    <div>
+	[% PROCESS site/footer %]
+    </div>[%# end of jumbotron %]
+    <pre>
+	[% Dumper.dump(params) %]
+    </pre>
+</body>
 
 <script>
  var x = document.getElementById("demo");
@@ -175,3 +180,5 @@
      document.getElementById("submit").click();
  }
 </script>
+
+

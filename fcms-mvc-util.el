@@ -30,7 +30,10 @@
    (setq fcms-current-view-dir (frdcsa-el-concat-dir (list fcms-current-dir "lib" fcms-current-app "View")))
    (setq fcms-current-controller-dir (frdcsa-el-concat-dir (list fcms-current-dir "lib" fcms-current-app "Controller")))
    (setq fcms-current-plugin-dir (frdcsa-el-concat-dir (list fcms-current-dir "lib" "Template" "Plugin")))
-   (setq fcms-current-template-dir (frdcsa-el-concat-dir (list fcms-current-dir "root" "src")))
+
+   (if (string= fcms-current-app "DirestNeed")
+    (setq fcms-current-template-dir (frdcsa-el-concat-dir (list fcms-current-dir "root" "src")))
+    (setq fcms-current-template-dir (frdcsa-el-concat-dir (list fcms-current-dir "root"))))
    )
   
   (defun fcms-open-model ()

@@ -20,7 +20,15 @@ Catalyst Controller.
 
 =cut
 
-sub index :Path :OptionalArgs(1) {
+sub index1 :Path :Args(0) {
+  my ( $self, $c ) = @_;
+  $c->stash
+    (
+     template => 'get/login_form.tt2',
+    );
+}
+
+sub index_user :Path :PathPart('get') Chained('') :CaptureArgs(1) {
   my ( $self, $c, $receiver ) = @_;
   my $google_maps_apikey = read_file($ENV{HOME}.'/.config/frdcsa/google_maps_apikey.txt');
   chomp $google_maps_apikey;
@@ -28,18 +36,26 @@ sub index :Path :OptionalArgs(1) {
     if (exists $c->model('DB')->roles->{$receiver}{receiver}) {
       $c->stash
 	(
+	 template => 'get/index.tt2',
 	 receiver => $receiver,
 	 shoppinglist => $c->model('DB')->shoppinglists->{$receiver},
 	 story => $c->model('DB')->stories->{$receiver},
 	 google_maps_apikey => $google_maps_apikey,
 	);
     }
-  } else {
-    $c->stash
-      (
-       template => 'get/login_form.tt2',
-      );
   }
+}
+
+sub add_to_shoppinglist :Chained('index_user') :Arg(0) {
+  my ( $self, $c ) = @_;
+  if (exists $c->request->params->{add_to_shoppinglist}) {
+    push @{$c->model('DB')->shoppinglists->{$c->stash->{receiver}}}, $c->request->params->{add_to_shoppinglist};
+  }
+  $c->stash
+    (
+     params => $c->request->params,
+     template => 'get/index.tt2',
+    );
 }
 
 sub login :Local :Args(0) {
@@ -56,7 +72,6 @@ sub maps_test :Local :Args(0) {
      google_maps_apikey => $google_maps_apikey,
     );
 }
-
 
 =encoding utf8
 
