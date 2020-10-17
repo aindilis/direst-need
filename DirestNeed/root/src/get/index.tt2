@@ -54,16 +54,14 @@
      }
     </style>
     <script>
+     var map;
+
      function initMap() {
-	 const map = new google.maps.Map(document.getElementById("map"), {
+	 map = new google.maps.Map(document.getElementById("map"), {
 	     zoom: 8,
 	     center: { lat: 40.731, lng: -73.997 },
 	 });
-	 const geocoder = new google.maps.Geocoder();
-	 const infowindow = new google.maps.InfoWindow();
-	 document.getElementById("submit").addEventListener("click", () => {
-	     geocodeLatLng(geocoder, map, infowindow);
-	 });
+
      }
 
      function geocodeLatLng(geocoder, map, infowindow) {
@@ -94,12 +92,6 @@
 	     }
 	 });
      }
-     
-     function moveToLocation(lat, lng){
-	 const center = new google.maps.LatLng(lat, lng);
-	 // using global variable:
-	 window.map.panTo(center);
-     }
     </script>
 </head>
 <body>
@@ -121,7 +113,7 @@
 		[% END %]
 		<form action="[%-c.uri_for(receiver,'add_to_shoppinglist') %]" method="post">
 		    <input type="text" name="add_to_shoppinglist" id="add_to_shoppinglist" placeholder="shoes, size 11"></input>
-		    <button type="submit" name="submit" id="submit">Add to shoppinglist</button>
+		    <button type="submit" name="submit1" id="submit1">Add to shoppinglist</button>
 		</form>
 	    </div>
 	    <div class="col-md-8">
@@ -134,7 +126,8 @@
 		<h2>[% receiver | html %]'s delivery info:</h2>
 		<em>(Please note, your location information will being given only to the Prime Now delivery service.  It won't be shared with donors).</em>
 		<div>
-		    <button onclick="getLocation()">Get [% receiver | html %]'s Location using GPS/WIFI</button>
+		    <input type="hidden" id="latlng" type="text" value="40.714224,-73.961452" />
+		    <button type="submit" name="submit2" id="submit2">Get [% receiver | html %]'s Location using GPS/WIFI</button>
 		    <p id="demo"></p>
 		</div>
 		<h2>Nearest address to [% receiver | html %]:</h2>
@@ -152,10 +145,6 @@
 	</div>
 	<hr>
     </div>
-    <div>
-	<input type="hidden" id="latlng" type="text" value="40.714224,-73.961452" />
-	<input type="hidden" id="submit" type="button" value="Reverse Geocode" />
-    </div>
     <div id="map"></div>
     <div>
 	[% PROCESS site/footer %]
@@ -166,6 +155,10 @@
 </body>
 
 <script>
+ document.getElementById("submit2").addEventListener("click", () => {
+     getLocation();
+ });
+
  var x = document.getElementById("demo");
  function getLocation() {
      if (navigator.geolocation) {
@@ -177,7 +170,9 @@
 
  function showPosition(position) {
      document.getElementById("latlng").value = position.coords.latitude + "," + position.coords.longitude;
-     document.getElementById("submit").click();
+     const geocoder = new google.maps.Geocoder();
+     const infowindow = new google.maps.InfoWindow();
+     geocodeLatLng(geocoder, map, infowindow);
  }
 </script>
 

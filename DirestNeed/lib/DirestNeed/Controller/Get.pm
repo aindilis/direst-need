@@ -46,7 +46,7 @@ sub index_user :Path :PathPart('get') Chained('') :CaptureArgs(1) {
   }
 }
 
-sub add_to_shoppinglist :Chained('index_user') :Arg(0) {
+sub add_to_shoppinglist :Chained('index_user') :Args(0) {
   my ( $self, $c ) = @_;
   if (exists $c->request->params->{add_to_shoppinglist}) {
     push @{$c->model('DB')->shoppinglists->{$c->stash->{receiver}}}, $c->request->params->{add_to_shoppinglist};
@@ -56,6 +56,7 @@ sub add_to_shoppinglist :Chained('index_user') :Arg(0) {
      params => $c->request->params,
      template => 'get/index.tt2',
     );
+  $c->response->redirect($c->uri_for($c->{stash}{receiver}));
 }
 
 sub login :Local :Args(0) {
